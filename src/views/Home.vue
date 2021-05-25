@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="main-container">
+    <div class="main-container" v-if="result != null">
       <div class="country-selector">
         <h1>Select Country</h1>
         <form>
@@ -115,6 +115,10 @@
         </div>
       </div>
     </div>
+
+    <div v-else class="main-container">
+      <h1 :style="{ textAlign: 'center' }">LOADING DATA...</h1>
+    </div>
   </div>
 </template>
 
@@ -130,52 +134,8 @@ export default {
       country: "PK",
     };
   },
-  setup() {
-    console.log("Component Setup Created!");
+  props: ["result"],
 
-    const result = ref([]);
-
-    const load = async () => {
-      var requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
-
-      // try {
-      //   const data = await fetch(
-      //     "https://covid-19-data.p.rapidapi.com/country?name=pakistan",
-      //     {
-      //       method: "GET",
-      //       headers: {
-      //         "x-rapidapi-key":
-      //           "0351fcf876msha342a604f121c6ep1f7672jsnd551e8dd4b29",
-      //         "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-      //       },
-      //     }
-      //   );
-      //   result.value = await data.json();
-      //   console.log(result);
-      // } catch (err) {
-      //   console.log(err.message);
-      // }
-
-      try {
-        const data = await fetch(
-          "https://api.covid19api.com/summary",
-          requestOptions
-        );
-
-        result.value = await data.json();
-        console.log(result.value);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    load();
-
-    return { result };
-  },
   mounted() {
     console.log("Component Mounted!");
 
@@ -361,6 +321,7 @@ export default {
     }
     h1 {
       font-size: 14px;
+      text-align: right;
     }
   }
 
